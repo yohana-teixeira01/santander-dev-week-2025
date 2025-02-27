@@ -24,3 +24,5 @@ springdoc:
   swagger-ui:
     enabled: true
     path: /swagger-ui/index.html
+server:
+  port: 8080

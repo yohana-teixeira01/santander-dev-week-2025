@@ -2,7 +2,9 @@ package me.dio.service.impl;
 
 import me.dio.domain.model.User;
 import me.dio.domain.repository.UserRepository;
+import me.dio.dto.UserDTO;
 import me.dio.service.UserService;
+import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +21,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    public UserDTO findById(Long id) {
+        User entity = userRepository.findById(id)
+                .orElseThrow(() -> new OpenApiResourceNotFoundException("User not found with ID: " + id));
+        return new UserDTO(entity);
     }
 
-    public User create(User userToCreate) {
+    public UserDTO create(UserDTO userToCreate) {
         boolean accountExists = userRepository.existsByAccountNumber(userToCreate.getAccount().getNumber());
         boolean nameExists = userRepository.existsByName(userToCreate.getName());
         boolean cardExists = userRepository.existsByCardNumber(userToCreate.getCard().getNumber());
@@ -36,11 +40,12 @@ public class UserServiceImpl implements UserService {
 
             throw new IllegalArgumentException(message.trim());
         }
-
-        return userRepository.save(userToCreate);
+        // Você deve ter um método de conversão toEntity() no UserDTO
+        User entity = userRepository.save(userToCreate.toEntity());
+        return new UserDTO(entity);
     }
 
-    public User update(Long id, User updatedUser) {
+    public UserDTO update(Long id, UserDTO updatedUser) {
         // Busca o usuário pelo ID, se não existir lança uma exceção
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + id));
@@ -54,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
         // Se houver conflitos, gera uma mensagem personalizada e lança uma exceção
         if (accountExists || nameExists || cardExists) {
-            String message = "Error: ";
+            String message = "Error:  ";
             if (accountExists) message += "This Account number already exists. ";
             if (nameExists) message += "This User name already exists. ";
             if (cardExists) message += "This Card number already exists. ";
@@ -69,7 +74,8 @@ public class UserServiceImpl implements UserService {
         existingUser.getCard().setLimit(updatedUser.getCard().getLimit());
 
         // Salva e retorna o usuário atualizado
-        return userRepository.save(existingUser);
+        User entity = userRepository.save(existingUser);
+        return new UserDTO(entity);
     }
 
     public void delete(Long id) {

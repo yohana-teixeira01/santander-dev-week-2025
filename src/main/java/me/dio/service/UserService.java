@@ -1,15 +1,16 @@
 package me.dio.service;
 
 
-import me.dio.domain.model.User;
+
+import me.dio.dto.UserDTO;
 
 public interface UserService {
 
-    User findById(Long id);
+    UserDTO findById(Long id);
 
-    User create(User userToCreate);
+    UserDTO create(UserDTO userToCreate);
 
-    User update(Long id, User updatedUser);
+    UserDTO update(Long id, UserDTO updatedUser);
 
     void delete(Long id);
 

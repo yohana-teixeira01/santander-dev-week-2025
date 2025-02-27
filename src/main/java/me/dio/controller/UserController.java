@@ -1,7 +1,7 @@
 package me.dio.controller;
 
 import jakarta.validation.Valid;
-import me.dio.domain.model.User;
+import me.dio.dto.UserDTO;
 import me.dio.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +20,15 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id){
-        var user = userService.findById(id);
+    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+        UserDTO user = userService.findById(id);
         return ResponseEntity.ok(user);
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@Valid @RequestBody User userToCreate){
-        var userCreated = userService.create(userToCreate);
+    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userToCreate) {
+        // O serviço agora recebe e retorna UserDTO
+        UserDTO userCreated = userService.create(userToCreate);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(userCreated.getId())
@@ -36,8 +37,9 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        User user = userService.update(id, updatedUser);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO updatedUser) {
+        // Atualiza o usuário e retorna UserDTO
+        UserDTO user = userService.update(id, updatedUser);
         return ResponseEntity.ok(user);
     }
 
@@ -52,5 +54,4 @@ public class UserController {
         userService.deleteCard(id);
         return ResponseEntity.ok("Card deleted successfully for user with ID: " + id);
     }
-
 }
