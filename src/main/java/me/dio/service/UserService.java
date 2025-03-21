@@ -1,8 +1,8 @@
 package me.dio.service;
 
-
-
 import me.dio.dto.UserDTO;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -14,5 +14,5 @@ public interface UserService {
 
     void delete(Long id);
 
-    void deleteCard(Long id);
+    List<UserDTO> findAll();
 }

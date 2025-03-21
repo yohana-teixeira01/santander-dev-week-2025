@@ -1,12 +1,18 @@
 package me.dio.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import me.dio.domain.model.*;
 
 import java.util.List;
 
 public class UserDTO {
+
+    @Schema(example = "0")
     private Long id;
+
+    @Schema(example = "string")
     private String name;
+
     private Account account;
     private Card card;
     private List<Feature> features;

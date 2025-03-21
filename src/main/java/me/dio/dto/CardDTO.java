@@ -8,6 +8,14 @@ public class CardDTO {
     private String number;
     private BigDecimal limit;
 
+    public BigDecimal getLimit() {
+        return limit;
+    }
+
+    public void setLimit(BigDecimal limit) {
+        this.limit = limit;
+    }
+
     public Long getId() {
         return id;
     }
@@ -24,11 +32,4 @@ public class CardDTO {
         this.number = number;
     }
 
-    public BigDecimal getLimit() {
-        return limit;
-    }
-
-    public void setLimit(BigDecimal limit) {
-        this.limit = limit;
-    }
 }

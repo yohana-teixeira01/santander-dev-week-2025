@@ -1,5 +1,6 @@
 package me.dio.domain.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,10 +11,13 @@ public  abstract class BaseItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(example = "0")
     private Long id;
 
+    @Schema(example = "URL")
     private String icon;
 
+    @Schema(example = "Descrição")
     private String description;
 
     public Long getId() {

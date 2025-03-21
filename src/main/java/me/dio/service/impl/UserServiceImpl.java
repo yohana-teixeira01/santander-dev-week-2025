@@ -8,12 +8,15 @@ import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -25,6 +28,12 @@ public class UserServiceImpl implements UserService {
         User entity = userRepository.findById(id)
                 .orElseThrow(() -> new OpenApiResourceNotFoundException("User not found with ID: " + id));
         return new UserDTO(entity);
+    }
+
+    @Override
+    public List<UserDTO> findAll() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
     public UserDTO create(UserDTO userToCreate) {
@@ -40,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
             throw new IllegalArgumentException(message.trim());
         }
-        // Você deve ter um método de conversão toEntity() no UserDTO
+        // Você deve ter um métoodo de conversão toEntity() no UserDTO
         User entity = userRepository.save(userToCreate.toEntity());
         return new UserDTO(entity);
     }
@@ -87,18 +96,4 @@ public class UserServiceImpl implements UserService {
         // Se existir, deleta o usuário do banco de dados
         userRepository.deleteById(id);
     }
-
-    public void deleteCard(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
-
-        // Verifica se o usuário possui um cartão
-        if (user.getCard() != null) {
-            user.setCard(null);  // Remove o cartão associado ao usuário
-            userRepository.save(user);  // Salva a alteração
-        } else {
-            throw new IllegalArgumentException("No card found to delete for this user.");
-        }
-    }
-
 }
