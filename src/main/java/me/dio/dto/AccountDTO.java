@@ -10,6 +10,9 @@ public class AccountDTO {
     private BigDecimal balance;
     private BigDecimal limit;
 
+    public AccountDTO(Long id, Object accountNumber, BigDecimal balance) {
+    }
+
     public Long getId() {
         return id;
     }

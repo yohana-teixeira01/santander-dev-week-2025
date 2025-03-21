@@ -14,7 +14,7 @@ public class Card {
     @Schema(example = "0")
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false,unique = true)
     @Schema(example = "xxxx xxxx xxxx 0000")
     private String number;
 

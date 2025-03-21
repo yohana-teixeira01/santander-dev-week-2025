@@ -14,7 +14,7 @@ public class Account {
     @Schema(example = "0")
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false,unique = true)
     @Schema(example = "00000000-0")
     private String number;
 
@@ -68,4 +68,5 @@ public class Account {
     public void setLimit(BigDecimal limit) {
         this.limit = limit;
     }
+
 }

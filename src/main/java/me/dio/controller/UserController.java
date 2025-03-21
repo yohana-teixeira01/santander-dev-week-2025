@@ -1,6 +1,7 @@
 package me.dio.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import me.dio.dto.UserDTO;
@@ -26,6 +27,9 @@ public class UserController {
 
     @Operation(summary = "Busca por id", description = "Método que retorna um registro", tags = "Users")
     @GetMapping("/{id}")
+    @ApiResponse(
+
+    )
     public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
         UserDTO user = userService.findById(id);
         if (user == null) {
@@ -33,16 +37,17 @@ public class UserController {
         }
         return ResponseEntity.ok(user);
     }
+
     @Operation(summary = "Listar", description = "Método que retorna todos os dados", tags = "Users")
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
         List<UserDTO> users = userService.findAll();
         return ResponseEntity.ok(users);
     }
+
     @Operation(summary = "Salvar", description = "Método que salva um registro",tags = "Users")
     @PostMapping
     public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userToCreate) {
-        // O serviço agora recebe e retorna UserDTO
         UserDTO userCreated = userService.create(userToCreate);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -50,13 +55,14 @@ public class UserController {
                 .toUri();
         return ResponseEntity.created(location).body(userCreated);
     }
+
     @Operation(summary = "Atualizar", description = "Método que atualiza os dados do registro", tags = "Users")
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO updatedUser) {
-        // Atualiza o usuário e retorna UserDTO
         UserDTO user = userService.update(id, updatedUser);
         return ResponseEntity.ok(user);
     }
+
     @Operation(summary = "Deletar", description = "Método que exclui um registro", tags = "Users")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
