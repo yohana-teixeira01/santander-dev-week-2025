@@ -95,12 +95,11 @@ O sistema gerencia as seguintes entidades:
 ---
 ## ⚠️ Problema Conhecido com Swagger  
 
-Durante o desenvolvimento, foi identificado um problema com a versão **2.1.0 do Swagger** ao gerar exemplos para campos do tipo **Long**. O Swagger UI exibia um ID absurdo (9007199254740991), que é o limite máximo de segurança do JavaScript, devido a um bug conhecido nas versões antigas do Springfox.
+Durante o desenvolvimento, foi identificado um problema com a versão **2.1.0 do Swagger** ao utilizar @RestControllerAdvice para tratar os erros mostrando **Failed to load API definition**.
 
 **Solução:**
-A migração para a versão **2.8.4 do Springfox** resolveu esse problema. Além disso, foi necessário forçar o exemplo de campos do tipo `Long` utilizando a anotação `@Schema(example = "0")`, o que corrigiu a exibição errada do ID.
-
-Se você enfrentar o mesmo problema, confira a solução completa no link do StackOverflow abaixo:
+A migração para a versão **2.8.4 do Springfox** resolveu esse problema. Além disso, foi necessário forçar o exemplo de campos do tipo `Long` utilizando a anotação `@Schema(example = "0")`, porque ao gerar exemplos para campos do tipo **Long**. O Swagger UI exibia um ID absurdo (9007199254740991), que é o limite máximo de segurança do JavaScript, devido a um bug conhecido nas versões antigas do Springfox. E essa solução corrigiu a exibição errada do ID.
+Se você enfrentar o mesmo problema ao utilizar o @RestControllerAdvice, confira a solução completa no link do StackOverflow abaixo:
 
 [Problema com Versão do Swagger 2.1.0 e solução](https://stackoverflow.com/questions/79274106/how-to-use-both-restcontrolleradvice-and-swagger-ui-in-spring-boot)
 
