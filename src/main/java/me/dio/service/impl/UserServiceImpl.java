@@ -8,11 +8,10 @@ import me.dio.dto.UserDTO;
 import me.dio.service.UserService;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,10 +28,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuário encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content(mediaType = "application/json"))
-    })
     public UserDTO findById(Long id) {
         User entity = userRepository.findById(id)
                 .orElseThrow(() -> new OpenApiResourceNotFoundException("Usuário não encontrado com ID: " + id));
@@ -40,20 +35,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de usuários", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))),
-            @ApiResponse(responseCode = "204", description = "Nenhum usuário encontrado", content = @Content(mediaType = "application/json"))
-    })
     public List<UserDTO> findAll() {
         List<User> users = userRepository.findAll();
         return users.stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
     @Override
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos ou informações duplicadas", content = @Content(mediaType = "application/json"))
-    })
     public UserDTO create(UserDTO userToCreate) {
 
         if (userToCreate.getAccount() == null || userToCreate.getAccount().getNumber() == null || userToCreate.getAccount().getNumber().isEmpty()) {
@@ -84,11 +71,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos ou informações duplicadas", content = @Content(mediaType = "application/json"))
-    })
     public UserDTO update(Long id, UserDTO updatedUser) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado com ID: " + id));
@@ -128,10 +110,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuário deletado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content(mediaType = "application/json"))
-    })
     public void delete(Long id) {
         if (!userRepository.existsById(id)) {
             throw new NoSuchElementException("Usuário não encontrado com ID: " + id);
